@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>計算機</title>
+  <link rel="stylesheet" href="./all.min.css">
+
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-image: url(./bg1.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      position: relative;
+    }
+
+    table {
+      /*margin: auto;*/
+      border-collapse: collapse;
+      font-size: 30px;
+      font-family: 'Lucida Sans', sans-serif;
+      background: black;
+      color: azure;
+      border: lightcyan;
+      position: relative;
+      /*margin-top: calc(50vh - 200px);*/
+      /*top: 264px;
+      left: 1235px;*/
+      z-index: 1;
+    }
+
+    td {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      vertical-align: center;
+      border-collapse: collapse;
+    }
+
+    td:hover {
+      background: linear-gradient(45deg, rgb(212, 173, 230), rgb(172, 137, 252), rgb(113, 115, 235));
+      color: black;
+    }
+
+    #text {
+      text-align: right end;
+      text-align: end;
+      vertical-align: bottom;
+      padding-right: 2px;
+      height: 140px;
+      font-size: 60px;
+    }
+
+    .phone img {
+      scale: 65%;
+      position: relative;
+      bottom: 32px;
+      left: 1089px;
+      -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(12px 12px 15px rgba(0, 0, 0, 0.3))
+    }
+
+    .phone:hover {
+      filter: drop-shadow(0 0 50px #FEFEFE);
+      animation: testAni3 4s infinite;
+    }
+
+    @keyframes testAni3 {
+      50% {
+        filter: drop-shadow(0 0 120px #e9d4fd);
+      }
+    }
+
+
+    .cal {
+      width: 332px;
+      height: 600px;
+      /*background: antiquewhite;*/
+      position: absolute;
+      top: 247px;
+      left: 1215px;
+    }
+
+    .top {
+      width: 330px;
+      height: 23px;
+      background: black;
+      position: absolute;
+      top: -24px;
+      left: 0px;
+      z-index: 2;
+      border-left: 1px solid white;
+    }
+
+    .clock {
+      font-size: 15px;
+      font-weight: bold;
+      /*background: blue;*/
+      color: white;
+      width: 250px;
+      height: 22px;
+      float: left;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      z-index: 2;
+    }
+
+    .clock span {
+      padding: 1px 1px;
+      vertical-align: middle;
+    }
+
+    .right {
+      width: 70px;
+      height: 20px;
+      /*background: lightblue;*/
+      position: absolute;
+      top: -1px;
+      right: 1px;
+      z-index: 2;
+    }
+
+    .right .wifi {
+      position: absolute;
+      top: -1px;
+      left: 1px;
+    }
+
+    .right .battery {
+      position: absolute;
+      top: -1px;
+      right: 2px;
+      margin-left: 1px;
+    }
+
+    .right img {
+      scale: 60%;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone"><img src="./phone.png" alt=""></div>
+  <div class="cal">
+    <div class="top">
+      <div class="clock">
+        &nbsp;
+        <span id="hours">00</span>
+        <span>:</span>
+        <span id="minutes">00</span>
+      </div>
+      <div class="right"> <img src="./wifi.gif" class="wifi">
+        <img src="battery2.gif" class="battery">
+      </div>
+    </div>
+
+
+    <table border="1">
+      <tr>
+        <td colspan="4" id="text">0</td>
+      </tr>
+      <tr>
+        <td>c</td>
+        <td>/</td>
+        <td>*</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td rowspan="2">+</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td rowspan="2">=</td>
+      </tr>
+      <tr>
+        <td colspan="2">0</td>
+        <td>.</td>
+      </tr>
+    </table>
+  </div>
+
+
+  <script>
+
+    //計算機
+    const text = document.getElementById('text')
+    const btns = document.querySelectorAll('td:not(#text)')
+
+    for (const btn of btns) {
+      btn.addEventListener('click', () => {
+        const btnText = btn.innerText
+        const operators = ['+', '-', '*', '/']
+        // 尾數
+        const lastText = text.innerText[text.innerText.length - 1]
+
+        //如果按的鍵是 =
+        if (btnText === '=') {
+          //如果最後一個字不是運算子，才計算
+          if (!operators.includes(lastText)) {
+            text.innerText = eval(text.innerText)
+          }
+        }
+        // 如果按 c ，歸0
+        else if (btnText === 'c') {
+          text.innerText = '0'
+        }
+        // 如果現在是0，按的是數字，把文字取代
+        else if (text.innerText === '0' && !isNaN(parseInt(btnText))) {
+          text.innerText = btnText
+        }
+        // 如果最後一個字是運算子
+        else if (operators.includes(lastText)) {
+          //現在按的不是運算子，才加上去
+          if (!operators.includes(btnText)) {
+            text.innerText += btnText
+          }
+        }
+        //如果最後一個字不是運算子，加上去      
+        else {
+          text.innerText += btnText
+        }
+      })
+    }
+    // 鍵盤輸入
+    document.addEventListener('keydown', event => {
+      const btnText = event.key
+      const operators = ['+', '-', '*', '/']
+      // 尾數
+      const lastText = text.innerText[text.innerText.length - 1]
+
+      //如果按的鍵是 =
+      if (btnText === '=' || btnText === 'Enter') {
+        //如果最後一個字不是運算子，才計算
+        if (!operators.includes(lastText)) {
+          text.innerText = eval(text.innerText)
+        }
+      }
+      // 如果按 c ，歸0
+      else if (btnText === 'c') {
+        text.innerText = '0'
+      }
+      // 如果現在是0，按的是數字，把文字取代
+      else if (text.innerText === '0' && !isNaN(parseInt(btnText))) {
+        text.innerText = btnText
+      }
+      // 如果最後一個字是運算子
+      else if (operators.includes(lastText)) {
+        //現在按的不是運算子，才加上去
+        if (!operators.includes(btnText)) {
+          text.innerText += btnText
+        }
+      }
+      //如果最後一個字不是運算子，且按的是數字或運算子，加上去      
+      else if (!isNaN(parseInt(btnText)) || operators.includes(btnText)) {
+        text.innerText += btnText
+      }
+    })
+
+    //數字時鐘
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      // 將單位數的小時和分鐘補零
+      var formattedHours = hours.toString().padStart(2, '0');
+      var formattedMinutes = minutes.toString().padStart(2, '0');
+
+      // 更新時鐘顯示
+      document.getElementById('hours').textContent = formattedHours;
+      document.getElementById('minutes').textContent = formattedMinutes;
+    }
+
+    // 每分鐘更新一次時鐘
+    setInterval(updateClock, 60000);
+
+    // 初始化時鐘
+    updateClock();
+  </script>
+
+</body>
+
+</html>
